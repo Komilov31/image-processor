@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/Komilov31/image-processor/internal/model"
 	"github.com/google/uuid"
@@ -23,11 +22,10 @@ func (s *Service) GetImageById(id uuid.UUID) (string, error) {
 	}
 
 	fileName := id.String() + "." + imageInfo.Format
-	log.Println(fileName)
-	if err := s.fileStorage.GetImage(fileName, processedDirName, "processed"); err != nil {
+	filePath := processedDirName + "/" + fileName
+	if err := s.fileStorage.GetImage(fileName, filePath, "processed"); err != nil {
 		return "", fmt.Errorf("could not get image from file storage: %w", err)
 	}
 
-	filePath := processedDirName + "/" + fileName
 	return filePath, nil
 }
